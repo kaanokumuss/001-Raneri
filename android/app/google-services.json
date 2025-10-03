@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "165260576421",
+    "project_id": "e-raneri",
+    "storage_bucket": "e-raneri.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165260576421:android:62251f0701fe0ef0106f4c",
+        "android_client_info": {
+          "package_name": "com.example.raneri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlKLVxMn2U-dcJ4E_rWkZbtq-Th3Rnobk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
