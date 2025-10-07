@@ -1,4 +1,4 @@
-name: personnel_tracker
+name: raneri
 description: Modern personel, puantaj ve harcama takip uygulaması
 publish_to: 'none'
 version: 1.0.0+1
@@ -43,13 +43,30 @@ dependencies:
 
   flutter_local_notifications: ^17.0.0
 
+image_picker: ^1.0.4
+    # Charts for statistics (opsiyonel)
+fl_chart: ^0.66.0
+  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+
+  # App Icon Değiştirme Paketi (Sadece dev_dependencies'ta olmalı)
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
     - assets/icons/
+
+# App Icon Konfigürasyonu (Tek PNG'nizi kullanacak şekilde ayarlandı)
+flutter_launcher_icons:
+  android: "launcher_icon"  # Android ikon adı (otomatik oluşur)
+  ios: false  # iOS üretimi kapalı
+  image_path: "assets/icons/RaneriIcon.png"  # Ana ikon dosyanız (legacy ve foreground için)
+  min_sdk_android: 21  # Minimum Android SDK (opsiyonel, ama iyi)
+  adaptive_icon_background: "#FFFFFF"  # Adaptive ikon arka planı (beyaz – PNG'nizin şeffaf alanlarını doldurur)
+  adaptive_icon_foreground: "assets/icons/RaneriIcon.png"  # Foreground: Aynı PNG'nizi kullanır (şeffaflık korunur)

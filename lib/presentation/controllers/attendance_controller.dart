@@ -28,12 +28,13 @@ class AttendanceController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // DEĞİŞTİRİLDİ: Sadece puantaj takibi aktif olan personeli getir
   Future<void> loadPersonnel() async {
     _setLoading(true);
     _setError(null);
 
     try {
-      _personnel = await _firebaseService.getPersonnel();
+      _personnel = await _firebaseService.getTrackedPersonnel(); // Değişti
       _setLoading(false);
     } catch (e) {
       _setError(e.toString());
@@ -109,6 +110,35 @@ class AttendanceController extends ChangeNotifier {
     }).toList();
   }
 
+  // YENİ: Sadece belirli personelin puantajlarını getir (erişim kontrolü için)
+  List<AttendanceModel> getAttendancesByPersonnelFiltered(
+    String personnelId,
+    UserModel? currentUser,
+  ) {
+    // Eğer admin değilse sadece kendi puantajını görebilir
+    if (currentUser?.role != UserRole.admin && currentUser?.id != personnelId) {
+      return [];
+    }
+
+    return _attendances.where((attendance) {
+      return attendance.personnelId == personnelId;
+    }).toList();
+  }
+
+  // YENİ: Erişim kontrollü personel listesi
+  List<PersonnelModel> getFilteredPersonnel(UserModel? currentUser) {
+    if (currentUser?.role == UserRole.admin) {
+      // Admin tüm personeli görebilir
+      return _personnel;
+    } else {
+      // Çalışan sadece kendisini görebilir
+      if (currentUser != null) {
+        return _personnel.where((p) => p.id == currentUser.id).toList();
+      }
+      return [];
+    }
+  }
+
   MonthlyAttendanceSummary getMonthlyAttendanceSummary(
     String personnelId,
     int year,
@@ -146,6 +176,21 @@ class AttendanceController extends ChangeNotifier {
       totalWorkHours: totalWorkHours,
       attendances: monthlyAttendances,
     );
+  }
+
+  // YENİ: Erişim kontrollü aylık özet
+  MonthlyAttendanceSummary? getMonthlyAttendanceSummaryFiltered(
+    String personnelId,
+    int year,
+    int month,
+    UserModel? currentUser,
+  ) {
+    // Eğer admin değilse ve kendi ID'si değilse null döndür
+    if (currentUser?.role != UserRole.admin && currentUser?.id != personnelId) {
+      return null;
+    }
+
+    return getMonthlyAttendanceSummary(personnelId, year, month);
   }
 
   Map<String, List<AttendanceModel>> getAttendancesByPersonnelGrouped() {

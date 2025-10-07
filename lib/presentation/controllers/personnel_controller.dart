@@ -25,12 +25,13 @@ class PersonnelController extends ChangeNotifier {
     notifyListeners();
   }
 
+  // DEĞİŞTİRİLDİ: Sadece puantaj takibi aktif olan personeli getir
   Future<void> loadPersonnel() async {
     _setLoading(true);
     _setError(null);
 
     try {
-      _personnel = await _firebaseService.getPersonnel();
+      _personnel = await _firebaseService.getTrackedPersonnel(); // Değişti
       _setLoading(false);
     } catch (e) {
       _setError(e.toString());

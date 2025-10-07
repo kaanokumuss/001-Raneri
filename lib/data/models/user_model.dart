@@ -11,6 +11,7 @@ class UserModel {
   final String username;
   UserRole role;
   final DateTime createdAt;
+  final bool trackAttendance; // Yeni field
 
   UserModel({
     required this.id,
@@ -21,6 +22,7 @@ class UserModel {
     required this.username,
     required this.role,
     required this.createdAt,
+    this.trackAttendance = false, // Default false
   });
 
   String get fullName => '$firstName $lastName';
@@ -34,7 +36,8 @@ class UserModel {
       'email': email,
       'username': username,
       'role': role.name,
-      'createdAt': Timestamp.fromDate(createdAt), // Firestore uyumlu
+      'createdAt': Timestamp.fromDate(createdAt),
+      'trackAttendance': trackAttendance, // Yeni field
     };
   }
 
@@ -58,6 +61,7 @@ class UserModel {
       username: map['username'] ?? '',
       role: UserRole.values.byName(map['role'] ?? 'employee'),
       createdAt: createdAt,
+      trackAttendance: map['trackAttendance'] ?? false, // Yeni field
     );
   }
 }
@@ -87,7 +91,7 @@ class PersonnelModel {
       'firstName': firstName,
       'lastName': lastName,
       'title': title,
-      'createdAt': Timestamp.fromDate(createdAt), // Firestore uyumlu
+      'createdAt': Timestamp.fromDate(createdAt),
       'documents': documents.map((doc) => doc.toMap()).toList(),
     };
   }
@@ -134,8 +138,8 @@ class DocumentModel {
     return {
       'id': id,
       'name': name,
-      'startDate': Timestamp.fromDate(startDate), // Firestore uyumlu
-      'endDate': Timestamp.fromDate(endDate), // Firestore uyumlu
+      'startDate': Timestamp.fromDate(startDate),
+      'endDate': Timestamp.fromDate(endDate),
     };
   }
 

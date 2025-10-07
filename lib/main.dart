@@ -1,35 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
 import 'presentation/controllers/auth_controller.dart';
 import 'presentation/controllers/personnel_controller.dart';
 import 'presentation/controllers/expense_controller.dart';
 import 'presentation/controllers/attendance_controller.dart';
+import 'presentation/controllers/daily_report_controller.dart'; // YENİ EKLEME
 import 'presentation/pages/auth/splash_page.dart';
-import 'presentation/themes/app_theme.dart';
-import 'services/firebase_service.dart';
 import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Locale verilerini başlat - hem tr_TR hem de en_US için
-  await initializeDateFormatting('tr_TR', null);
-  await initializeDateFormatting('en_US', null);
-
   await Firebase.initializeApp();
   await NotificationService.initialize();
-
-  runApp(const PersonnelTrackerApp());
+  runApp(const MyApp());
 }
 
-class PersonnelTrackerApp extends StatelessWidget {
-  const PersonnelTrackerApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,22 +28,27 @@ class PersonnelTrackerApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => PersonnelController()),
         ChangeNotifierProvider(create: (_) => ExpenseController()),
         ChangeNotifierProvider(create: (_) => AttendanceController()),
+        ChangeNotifierProvider(
+            create: (_) => DailyReportController()), // YENİ EKLEME
       ],
       child: MaterialApp(
-        title: 'Personel Takip',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        home: const SplashPage(),
-        locale: const Locale('tr', 'TR'), // Türkçe locale
-        supportedLocales: const [
-          Locale('tr', 'TR'),
-          Locale('en', 'US'),
-        ],
+        title: 'Raneri Energy',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFF1DE9B6),
+          ),
+          useMaterial3: true,
+        ),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        supportedLocales: const [
+          Locale('tr', 'TR'),
+        ],
+        home: const SplashPage(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

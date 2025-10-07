@@ -165,8 +165,8 @@ class PDFService {
               headers: ['Kategori', 'Adet', 'Tutar', 'Oran'],
               data: categoryTotals.entries.map((entry) {
                 final count = groupedExpenses[entry.key]!.length;
-                final percentage = (entry.value / totalAmount * 100)
-                    .toStringAsFixed(1);
+                final percentage =
+                    (entry.value / totalAmount * 100).toStringAsFixed(1);
                 return [
                   entry.key,
                   count.toString(),
